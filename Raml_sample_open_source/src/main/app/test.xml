@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+    <http:listener-config name="test-httpListenerConfig" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration" />
+    <apikit:config name="test-config" raml="test.raml" consoleEnabled="true" consolePath="console" doc:name="Router" />
+    <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8089" doc:name="HTTP Listener Configuration" />
+    <http:request-config name="HTTP_Request_Configuration" host="127.0.0.1" port="8081" doc:name="HTTP Request Configuration" />
+    <flow name="test-main">
+        <http:listener config-ref="test-httpListenerConfig" path="/api/*" doc:name="HTTP" />
+        <apikit:router config-ref="test-config" doc:name="APIkit Router" />
+        <exception-strategy ref="test-apiKitGlobalExceptionMapping" doc:name="Reference Exception Strategy" />
+    </flow>
+    <flow name="delete:/{uuid}:test-config">
+        <set-payload value="{&#xA;  &quot;success&quot;: &quot;Data Delete Successful&quot;&#xA;}" doc:name="Set Payload" />
+    </flow>
+    <apikit:mapping-exception-strategy name="test-apiKitGlobalExceptionMapping">
+        <apikit:mapping statusCode="404">
+            <apikit:exception value="org.mule.module.apikit.exception.NotFoundException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property" />
+            <set-payload value="{ &quot;message&quot;: &quot;Resource not found&quot; }" doc:name="Set Payload" />
+        </apikit:mapping>
+        <apikit:mapping statusCode="405">
+            <apikit:exception value="org.mule.module.apikit.exception.MethodNotAllowedException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property" />
+            <set-payload value="{ &quot;message&quot;: &quot;Method not allowed&quot; }" doc:name="Set Payload" />
+        </apikit:mapping>
+        <apikit:mapping statusCode="415">
+            <apikit:exception value="org.mule.module.apikit.exception.UnsupportedMediaTypeException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property" />
+            <set-payload value="{ &quot;message&quot;: &quot;Unsupported media type&quot; }" doc:name="Set Payload" />
+        </apikit:mapping>
+        <apikit:mapping statusCode="406">
+            <apikit:exception value="org.mule.module.apikit.exception.NotAcceptableException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property" />
+            <set-payload value="{ &quot;message&quot;: &quot;Not acceptable&quot; }" doc:name="Set Payload" />
+        </apikit:mapping>
+        <apikit:mapping statusCode="400">
+            <apikit:exception value="org.mule.module.apikit.exception.BadRequestException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property" />
+            <set-payload value="{ &quot;message&quot;: &quot;Bad request&quot; }" doc:name="Set Payload" />
+        </apikit:mapping>
+    </apikit:mapping-exception-strategy>
+    <flow name="delete:/call-history/{uuid}:api-config">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/service" doc:name="HTTP" />
+        <set-variable variableName="uuid" value="8f931a-0f6d-11e5-8760-636c" doc:name="Variable" />
+        <http:request config-ref="HTTP_Request_Configuration" path="/api/{uuid}" method="DELETE" doc:name="Call History Data">
+            <http:request-builder>
+                <http:uri-param paramName="uuid" value="#[flowVars.uuid]" />
+            </http:request-builder>
+        </http:request>
+        <logger level="INFO" doc:name="Logger" />
+    </flow>
+   
+    <flow name="get:/books:test-config">
+        <set-payload value="{&#xA;  &quot;id&quot;: &quot;2AAS5600WW&quot;,&#xA;  &quot;bookName&quot;: &quot;Discovery of India&quot;,&#xA;  &quot;price&quot;: 234&#xA;}" />
+    </flow>
+</mule>

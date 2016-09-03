@@ -1,0 +1,94 @@
+#%RAML 0.8
+---
+#===============================================================
+#  Products API - RAML sample project
+#  References:
+#    - RAML Specification - http://raml.org/spec.html
+#    
+#===============================================================
+title: Products API
+version: v0.1
+#baseUri: http://localhost:8082/test
+baseUri: http://localhost:8081
+#List of media type to support
+mediaType:  application/json
+#List of protocols to support for baseUri
+protocols: [ HTTP, HTTPS ]
+
+#===============================================================
+#  API documentation
+#===============================================================
+documentation:
+ - title: Welcome Page
+   content: |
+     Hi, this is a sample *open source project* to demonstrate the implementation of **RAML**  specification with Anypoint Studio.
+     
+     This project will be extended to a full time open source project soon.
+     
+     For more info, please visit [My Git repo](https://github.com/anirban37?tab=repositories)
+     
+ - title: About test
+   content: A **sample** project to *demonstrate* implementation of RAML
+     specification with Anypoint Studio.
+     
+     Build with API Designer                        
+
+  #---------------------------------------------------------------
+  # Resource section.
+  #---------------------------------------------------------------
+
+/{name}: 
+         uriParameters: 
+          name: 
+                 displayName: name
+                 description: |
+                     Enter the Name string here.
+                 type: string
+                 required: false
+                 repeat: false
+                 example: 8f931a-0f6d-11e5-8760-636c
+         delete:
+             description: Remove the call history from the Database. Notice that this operation is non-reversible and all data associated will be lost. Use with caution.
+             responses: 
+                 200: 
+                      body:
+                       application/json:
+                         example: |
+                           {
+                             "success": "Data Delete Successful"
+                           }
+                     
+                 404: 
+                     description: |
+                         Unable to delete  with that identifier
+        
+/books: 
+         
+        displayName: Book
+        description: Description on Book
+        
+        get:
+          description: Get book name
+                    
+          queryParameters:
+           author:
+            displayName: Author
+            type: string
+            description: An author's full name
+            example: Anirban
+            required: false
+          
+          responses: 
+                 200: 
+                      body:
+                       application/json:
+                         example: |
+                           {
+                             "id": "2AAS5600WW",
+                             "bookName": "Discovery of India",
+                             "price": 234
+                           }
+                     
+                 404: 
+                     description: |
+                         Unable to get with that author
