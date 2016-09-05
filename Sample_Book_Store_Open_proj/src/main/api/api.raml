@@ -24,13 +24,13 @@ documentation:
    content: |
      Hi, this is a sample *open source project* to demonstrate the implementation of **RAML**  specification with Anypoint Studio.
      
-     This project demonstrate an imaginary shipping project as a sample demo and demonstrate an API for an imaginary shipping company for their shippment.
+     This project demonstrate an imaginary book as a sample demo and demonstrate an API for an imaginary book store for their shippment.
      
      For more info, please visit [My Git repo](https://github.com/anirban37?tab=repositories)
      
  - title: About test
    content: A **sample** project to *demonstrate* implementation of RAML
-     specification with Anypoint Studio and demonstrate an API for an imaginary shipping company.
+     specification with Anypoint Studio and demonstrate an API for an imaginary bookstore.
      
      Build with API Designer                        
 
@@ -38,47 +38,26 @@ documentation:
   #---------------------------------------------------------------
   # Resource section.
   #---------------------------------------------------------------
-/myshipper/shipment/{proNum}/getstatus: 
+/myBook/{bookId}/getStatus: 
   get: 
-    description: returns the carrier status for the specific tracking for striker imaginary shipper
+    description: returns the book status for the specific bookId
     responses: 
       200: 
-        description: Retrieve carrier status from striker imaginary shipper.
+        description: Retrieve book status for the specific bookId.
         body: 
           application/json: 
             example: |
               {
-                "TrackingLine": [
+                "BookDetails": [
                   {
-                    "Description": "Shipment Picked Up From Shipper In New Delhi, IND",
-                    "Date": "2015-10-30",
-                    "Time": "15:12:00"
-                  },
-                  
-                  {
-                    "Description": "Shipment In Transit.",
-                    "Date": "2015-10-30",
-                    "Time": "21:35:00"
-                  },
-                  {
-                    "Description": "Shipment Arrived At Destination Terminal In Mumbai, IND",
-                    "Date": "2015-10-31",
-                    "Time": "06:17:00"
-                  },
-                  {
-                    "Description": "Shipment Out For Delivery To Consignee In MultiStarrer,Bangalore, IND",
-                    "Date": "2015-11-02",
-                    "Time": "08:40:00"
-                  },
-                  {
-                    "Description": "Delivered To Consignee In MultiStarrer,Bangalore, IND",
-                    "Date": "2015-11-02",
-                    "Time": "13:27:00"
+                    "Description": "New series",
+                    "BookName": "My Book",
+                    "Author": "Anirban"
                   }
                 ],
-                "AmountDue": "13300",
-                "ConsigneeAddress1": "ABC road , Bangalore",
-                "Status": "Done",
+                "Price": 200,
+                "BookId": "AASS56FFF",
+                "Status": "Sold",
                 "ConsigneeAddress2": "A",
                 "ConsigneeCity": "Bangalore",
                 "ConsigneeName": "MultiStarrer",
@@ -93,51 +72,40 @@ documentation:
                 "ShipperAddress2": "A",
                 "ShipperNumber": "123",
                 "ShipperName": "STRIKER Imaginary shipper",
-                "Weight": "220",
-                "OriginTerminalPhoneNumber": "1235",
+                "Quantity": 1,
+                "Genre": "Comedy",
                 "DestinationTerminalPhoneNumber": "535355535"
               }             
-/striker/shipment/{proNum}/getstatus: 
+/myBook/getAllStatus: 
   get: 
-    description: returns the carrier status for the specific tracking for striker imaginary shipper
+    description: returns the all book status
     responses: 
       200: 
-        description: Retrieve carrier status.
+        description: Retrieve all book status.
         body: 
           application/json: 
             example: |
-              {
-                "TrackingLine": [
+             {
+                "BookDetails": [
                   {
-                    "Description": "Shipment Picked Up From Shipper In New Delhi, IND",
-                    "Date": "2015-10-30",
-                    "Time": "15:12:00"
-                  },
-                  
-                  {
-                    "Description": "Shipment In Transit.",
-                    "Date": "2015-10-30",
-                    "Time": "21:35:00"
+                    "Description": "New series",
+                    "BookName": "My Book",
+                    "Author": "Anirban"
                   },
                   {
-                    "Description": "Shipment Arrived At Destination Terminal In Mumbai, IND",
-                    "Date": "2015-10-31",
-                    "Time": "06:17:00"
+                    "Description": "New series books",
+                    "BookName": "The Truth",
+                    "Author": "John Smith"
                   },
                   {
-                    "Description": "Shipment Out For Delivery To Consignee In MultiStarrer,Bangalore, IND",
-                    "Date": "2015-11-02",
-                    "Time": "08:40:00"
-                  },
-                  {
-                    "Description": "Delivered To Consignee In MultiStarrer,Bangalore, IND",
-                    "Date": "2015-11-02",
-                    "Time": "13:27:00"
+                    "Description": "New series books",
+                    "BookName": "Smilling away",
+                    "Author": "Wendy Carlos"
                   }
                 ],
-                "AmountDue": "13300",
-                "ConsigneeAddress1": "ABC road , Bangalore",
-                "Status": "Done",
+                "Price": 200,
+                "BookId": "AASS56FFF",
+                "Status": "Sold",
                 "ConsigneeAddress2": "A",
                 "ConsigneeCity": "Bangalore",
                 "ConsigneeName": "MultiStarrer",
@@ -147,12 +115,12 @@ documentation:
                 "DeliveryDate": "2015-11-02",
                 "DeliveryTime": "1317",
                 "Pieces": "1",
-                "ProNumber": "00000000",
+                "ProNumber": "000000000",
                 "ShipperAddress1": "A",
                 "ShipperAddress2": "A",
                 "ShipperNumber": "123",
                 "ShipperName": "STRIKER Imaginary shipper",
-                "Weight": "220",
-                "OriginTerminalPhoneNumber": "1235",
+                "Quantity": 1,
+                "Genre": "Comedy",
                 "DestinationTerminalPhoneNumber": "535355535"
               }             
